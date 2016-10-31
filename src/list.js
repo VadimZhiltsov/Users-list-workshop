@@ -18,6 +18,7 @@ export class User {
 			headers: myHeaders,  // добавляем заголовки
 			mode: 'cors',   // ставим режим кросс доменных запросов
 			cache: 'default' // кеширование по умолчанию
+
 /*			body: JSON.stringify({   /// добавляем данные к запросу
 				name: newUser.name,
 				password: newUser.password,
@@ -28,11 +29,12 @@ export class User {
 	var myRequest = new Request(userIdURL, myInit); // создаём запрос
     
 
-	fetch(`http://193.111.63.76:3000/api/v1/Users`)
+	fetch(myRequest)
 	.then(function(response) {
+		window.location.href = "../pages/list-page.html";
 		return response.json();
 	})
-	.then(function(data) {
+	.then(function(json) {
 		// alert(JSON.stringify(json));
 	});
 
@@ -85,12 +87,13 @@ export default function initPage() {
 			cell.querySelector('.del_button').addEventListener('click', function(event) {
 			event.preventDefault();
 			// console.log(12345);
-			var userIdURL = `http://193.111.63.76:3000/api/v1/Users/'${idOfUser}'`;
+			var userIdURL = `http://193.111.63.76:3000/api/v1/Users/${event.currentTarget.id}`;
 			var delUser = new User();
 			delUser.delete(userIdURL);
 			});
 
 			document.body.appendChild(table);
+
 		}
 	});
 	// alert('list page');
