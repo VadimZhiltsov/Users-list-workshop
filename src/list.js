@@ -6,7 +6,7 @@ export class User {
         this.comment = comment;
     }
 
-    save() {
+    edit() {
 
     }
 
@@ -50,20 +50,21 @@ export class User {
 
 export default function initPage() {
 	var table = document.createElement('table');
+	var userIdURL;
 
 	fetch(`http://193.111.63.76:3000/api/v1/Users`)
 	.then(function(response) {
 		return response.json();
 	})
 	.then(function(data) {
-		console.log(data);
+		// console.log(data);
 		var row = table.insertRow(-1);
 		for (var key in data[1]) {
 			
 			var cell = row.insertCell(-1);
 			cell.innerHTML = key;
 			document.body.appendChild(table);
-			console.log(key);
+			// console.log(key);
 		}
 
 		for (var i = 0; i < data.length; i++) {
@@ -74,20 +75,22 @@ export default function initPage() {
 				cell.innerHTML = data[i][key];
 			}
 
+			var idOfUser = data[i]._id;
 			var cell = row.insertCell(-1);
 			cell.innerHTML = `<button class="edit_button" id="${data[i]._id}">Edit</button>`;
 			cell.querySelector('.edit_button').addEventListener('click', function(event) {
 			event.preventDefault();
-			console.log(54321);
+				userIdURL = `http://193.111.63.76:3000/api/v1/Users/${event.currentTarget.id}`;
+			window.location.href = `../pages/edit-page.html?id=${event.currentTarget.id}`;
+			// console.log(54321);
 			});
 
-			var idOfUser = data[i]._id;
+			
 			var cell = row.insertCell(-1);
 			cell.innerHTML = `<button class="del_button" id="${idOfUser}">Delete</button>`;
 			cell.querySelector('.del_button').addEventListener('click', function(event) {
 			event.preventDefault();
-			// console.log(12345);
-			var userIdURL = `http://193.111.63.76:3000/api/v1/Users/${event.currentTarget.id}`;
+				userIdURL = `http://193.111.63.76:3000/api/v1/Users/${event.currentTarget.id}`;
 			var delUser = new User();
 			delUser.delete(userIdURL);
 			});
@@ -95,6 +98,10 @@ export default function initPage() {
 			document.body.appendChild(table);
 
 		}
+		
+
 	});
 	// alert('list page');
+	
+	
 }
