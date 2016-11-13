@@ -1,17 +1,16 @@
 import { performRequest } from './utils'
 
 export default class Model {
-	constuctor(attributes) {
+	constructor(attributes) {
 		this.attributes = attributes;
-
 	}
 
 	save() {
-		if (this.get('id')) {
+		if (this.get('_id')) {
 			return performRequest({
 				method: 'PUT',
 				data: this.attributes,
-				url: this.constructor.url + this.get('id')
+				url: this.constructor.url + this.get('_id')
 			});
 		} else {
 			return performRequest({
@@ -20,7 +19,7 @@ export default class Model {
 				url: this.constructor.url
 			}).then((obj) => {
 				this.set({
-					id: obj.id
+					_id: obj._id
 				});
 			});
 		}
@@ -29,10 +28,10 @@ export default class Model {
 	delete() {
 		return performRequest({
 			method: 'DELETE',
-			url: this.constructor.url + this.get('id')
+			url: this.constructor.url + this.get('_id')
 		}).then((obj) => {
 			this.set({
-				id: null
+				_id: null
 			});
 		});
 	}
@@ -53,7 +52,7 @@ export default class Model {
 			method: 'GET',
 			url: this.url + id
 		}).then((obj) => {
-			return  this.constructor(obj);
+			return new this(obj);
 		});
 	}
 
@@ -63,7 +62,7 @@ export default class Model {
 			url: this.url
 		}).then((results) => {
 			return results.map((obj) => {
-				return new this.constructor(obj);
+				return new this(obj);
 			});
 		});
 	}

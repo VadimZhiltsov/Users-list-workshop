@@ -1,5 +1,9 @@
 import UserModel from './UserModel';
 
-export default function initPage() {
-	alert('list page')
+export default async function initPage() {
+
+	const data = await UserModel.findAll()
+
+	debugger;
+
 }

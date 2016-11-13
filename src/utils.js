@@ -30,7 +30,11 @@ export function performRequest(params) {
 	var myRequest = new Request(params.url, myInit); // создаём запрос
 
 	return fetch(myRequest).then(function(response) {
-		return response.json(); /// парсим ответ от сервера в json
+		if (params.method !== 'DELETE') {
+			return response.json(); /// парсим ответ от сервера в json
+		} else {
+			return response;
+		}
 	});
 }
 
